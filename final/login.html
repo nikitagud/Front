@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+</head>
+<body>
+  <header>
+    <button onclick="window.location.href='index.html'">Main Page</button>
+    <button onclick="window.location.href='about.html'">About</button>
+    <button style="display: none;" id="loginButton" onclick="window.location.href='login.html'">Login</button>
+  </header>
+  
+  <h1>Login</h1>
+  
+  <form>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+    
+    <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    
+    <button type="submit">Login</button>
+  </form>
+  
+  <script>
+    // Check if the user is logged in and hide the login button
+    if (localStorage.getItem('loggedIn')) {
+      document.getElementById('loginButton').style.display = 'none';
+    }
+    
+    // Handle form submission
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Perform login logic
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+      
+      // Assuming successful login, store the login state
+      localStorage.setItem('loggedIn', true);
+      
+      // Redirect to the main page
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up Page</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="header">
+    <a class="logo" href="index.html">Logo</a>
+    <div class="auth-buttons">
+      <button onclick="window.location.href='login.html'">Login</button>
+    </div>
+  </div>
+  
+  <h1>Sign Up</h1>
+  
+  <form id="signupForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+    
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" required><br><br>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required minlength="5"><br><br>
+    
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required minlength="5"><br>
+    <span id="passwordError" style="color: red;"></span><br><br>
+    
+    <button type="submit">Sign Up</button>
+  </form>
+  
+  <script>
+    function errorHandler(err) {
+      console.error(err);
+    }
+    
+    function createFileWriter(fileEntry, userData) {
+      fileEntry.createWriter(function(fileWriter) {
+        fileWriter.onwriteend = function() {
+          // Assuming successful sign up, store the login state
+          localStorage.setItem('loggedIn', true);
+          
+          // Redirect to the main page
+          window.location.href = 'index.html';
+        };
+        
+        fileWriter.onerror = errorHandler;
+        
+        fileWriter.write(new Blob([JSON.stringify(userData, null, 2)], { type: 'application/json' }));
+      }, errorHandler);
+    }
+    
+    function onInitFs(fs) {
+      fs.root.getFile('usercredentials.json', { create: true }, function(fileEntry) {
+        var email = document.getElementById('email').value;
+        var name = document.getElementById('name').value;
+        var surname = document.getElementById('surname').value;
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+          document.getElementById('passwordError').textContent = "Passwords do not match.";
+        } else {
+          var userData = {
+            email: email,
+            name: name,
+            surname: surname,
+            password: password
+          };
+          
+          createFileWriter(fileEntry, userData);
+        }
+      }, errorHandler);
+    }
+    
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+    
+    if (window.requestFileSystem) {
+      window.requestFileSystem(window.TEMPORARY, 5 * 1024 * 1024, onInitFs, errorHandler);
+    } else {
+      console.error('File System API is not supported in this browser.');
+    }
+  </script>
+</body>
+</html>

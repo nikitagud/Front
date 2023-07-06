@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Details</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional styles for the book details page */
+    .content {
+      padding: 100px 20px;
+      text-align: center;
+      color: #fff;
+    }
+  
+    .book-info {
+      margin-top: 50px;
+    }
+  
+    .book-info img {
+      width: 300px;
+      height: 300px;
+      margin-bottom: 20px;
+    }
+  
+    .book-info h2 {
+      font-size: 24px;
+    }
+  
+    .book-info p {
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a class="logo" href="index.html">Logo</a>
+  
+    <div class="dropdown">
+      <span>Language</span>
+      <div class="dropdown-content">
+        <a href="#">GE</a>
+        <a href="#">EN</a>
+      </div>
+    </div>
+  
+    <button class="contact-button" onclick="window.location.href='contact.html'">Contact Us</button>
+  </div>
+  
+  <div class="content">
+    <h1>Book Details</h1>
+  
+    <div class="book-info">
+      <!-- Book details will be dynamically loaded here -->
+    </div>
+  </div>
+  
+  <script>
+    // Retrieve the book ID from the URL parameter
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    var bookId = urlParams.get('bookId');
+    
+    // Get book details based on the selected book ID
+    // You can customize this part to fetch book details from a server or an external data source
+    var bookDetails = {
+      1: {
+        name: "Book 1",
+        availability: "Available",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        image: "book1.jpg"
+      },
+      2: {
+        name: "Book 2",
+        availability: "Available",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        image: "book2.jpg"
+      },
+      3: {
+        name: "Book 3",
+        availability: "Available",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        image: "book3.jpg"
+      },
+      4: {
+        name: "Book 4",
+        availability: "Not Available",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        image: "book4.jpg"
+      }
+    };
+    
+    // Check if the book details exist for the given book ID
+    if (bookDetails.hasOwnProperty(bookId)) {
+      var book = bookDetails[bookId];
+      
+      // Build the HTML for displaying book details
+      var bookHtml = `
+        <img src="${book.image}" alt="${book.name}">
+        <h2>${book.name}</h2>
+        <p>Availability: ${book.availability}</p>
+        <p>Description: ${book.description}</p>
+      `;
+      
+      // Update the book details on the page
+      document.querySelector('.book-info').innerHTML = bookHtml;
+    } else {
+      // Display an error message if the book details are not found
+      document.querySelector('.book-info').innerHTML = '<p>Book details not found.</p>';
+    }
+  </script>
+</body>
+</html>
